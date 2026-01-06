@@ -47,7 +47,6 @@ export function AddToListModal({ isOpen, onClose, book }: AddToListModalProps) {
   const handleAddToList = async (list: ReadingList) => {
     // Check if book is already in the list
     if (list.bookIds.includes(book.id)) {
-      alert('This book is already in the selected list!');
       return;
     }
 

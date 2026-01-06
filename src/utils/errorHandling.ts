@@ -3,7 +3,7 @@
  */
 
 /**
- * Handles API errors and displays user-friendly messages
+ * Handles API errors and logs them
  *
  * TODO: Integrate with a proper toast notification library
  * Recommended: react-hot-toast or react-toastify
@@ -21,9 +21,8 @@ export function handleApiError(error: unknown): void {
     message = error;
   }
 
-  // For now, use alert (replace with toast notification)
-  alert(`Error: ${message}`);
-  console.error('API Error:', error);
+  // Just log the error, no alert
+  console.error('API Error:', message, error);
 }
 
 /**
@@ -32,6 +31,5 @@ export function handleApiError(error: unknown): void {
  * TODO: Replace with toast.success(message)
  */
 export function showSuccess(message: string): void {
-  alert(`Success: ${message}`);
   console.log('Success:', message);
 }

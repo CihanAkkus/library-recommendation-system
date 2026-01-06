@@ -62,7 +62,8 @@ export function Signup() {
     setIsLoading(true);
     try {
       await signup(email, password, name);
-      navigate('/');
+      // Navigate to verification page with email
+      navigate('/verify', { state: { email } });
     } catch (error) {
       handleApiError(error);
     } finally {

@@ -8,8 +8,10 @@ import { Books } from './pages/Books';
 import { BookDetail } from './pages/BookDetail';
 import { Recommendations } from './pages/Recommendations';
 import { ReadingLists } from './pages/ReadingLists';
+import { ReadingListDetail } from './pages/ReadingListDetail';
 import { Login } from './pages/Login';
 import { Signup } from './pages/Signup';
+import { Verify } from './pages/Verify';
 import { Admin } from './pages/Admin';
 import { NotFound } from './pages/NotFound';
 
@@ -36,8 +38,17 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/reading-lists/:id"
+                element={
+                  <ProtectedRoute>
+                    <ReadingListDetail />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/verify" element={<Verify />} />
               <Route
                 path="/admin"
                 element={

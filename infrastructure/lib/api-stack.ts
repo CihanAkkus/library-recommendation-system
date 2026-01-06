@@ -2,6 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import * as path from 'path';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
@@ -47,7 +48,7 @@ export class ApiStack extends cdk.Stack {
       identitySource: 'method.request.header.Authorization',
     });
 
-    const getBooks = new NodejsFunction(this, 'GetBooksFuncition', {
+    const getBooks = new NodejsFunction(this, 'GetBooksFunction', {
       runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'handler',
       entry: path.join(__dirname, '../lambda/get-books/index.ts'),
@@ -128,11 +129,28 @@ export class ApiStack extends cdk.Stack {
       },
     });
 
+    // AI Recommendations Lambda Function
+    const getRecommendations = new NodejsFunction(this, 'GetRecommendationsFunction', {
+      runtime: lambda.Runtime.NODEJS_20_X,
+      handler: 'handler',
+      entry: path.join(__dirname, '../lambda/get-recommendations/index.ts'),
+      timeout: cdk.Duration.seconds(30),
+      memorySize: 512,
+      architecture: lambda.Architecture.ARM_64,
+    });
+
     // Grant permissions
     props.readingListsTable.grantReadData(getReadingLists);
     props.readingListsTable.grantWriteData(createReadingList);
     props.readingListsTable.grantReadWriteData(updateReadingList);
     props.readingListsTable.grantReadWriteData(deleteReadingList);
+
+    // Grant Bedrock permissions to recommendations function
+    getRecommendations.addToRolePolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ['bedrock:InvokeModel'],
+      resources: ['arn:aws:bedrock:us-east-1::foundation-model/anthropic.claude-3-haiku-20240307-v1:0'],
+    }));
 
     // API Resources for Reading Lists
     const readingListsResource = this.api.root.addResource('reading-lists');
@@ -158,6 +176,10 @@ export class ApiStack extends cdk.Stack {
         authorizationType: apigateway.AuthorizationType.COGNITO,
       }
     );
+
+    // AI Recommendations API Resource
+    const recommendationsResource = this.api.root.addResource('recommendations');
+    recommendationsResource.addMethod('POST', new apigateway.LambdaIntegration(getRecommendations));
 
     new cdk.CfnOutput(this, 'ApiUrl', {
       value: this.api.url,

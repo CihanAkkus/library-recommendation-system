@@ -41,7 +41,7 @@ export function BookDetail() {
 
   // TODO: Implement add to reading list functionality
   const handleAddToList = () => {
-    alert('Add to reading list functionality coming soon!');
+    console.log('Add to reading list functionality coming soon!');
   };
 
   if (isLoading) {

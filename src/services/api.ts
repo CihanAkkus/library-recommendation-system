@@ -232,23 +232,41 @@ export async function deleteBook(): Promise<void> {
  *
  * Documentation: https://docs.aws.amazon.com/bedrock/latest/userguide/
  */
-export async function getRecommendations(): Promise<Recommendation[]> {
-  // TODO: Remove this mock implementation after deploying Bedrock Lambda
+/**
+ * Get AI-powered book recommendations using Amazon Bedrock
+ */
+export async function getRecommendations(query: string): Promise<Recommendation[]> {
+  if (API_BASE_URL) {
+    const response = await fetch(`${API_BASE_URL}/recommendations`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query })
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to get recommendations');
+    }
+    
+    const data = await response.json();
+    return data.recommendations || [];
+  }
+  
+  // Fallback to mock data if no API URL
   return new Promise((resolve) => {
     setTimeout(() => {
       const mockRecommendations: Recommendation[] = [
         {
           id: '1',
           bookId: '1',
-          reason:
-            'Based on your interest in philosophical fiction, this book explores themes of choice and regret.',
+          reason: `Based on your query "${query}", this book explores similar themes and concepts.`,
           confidence: 0.92,
         },
         {
           id: '2',
           bookId: '2',
-          reason:
-            'If you enjoy science-based thrillers, this space adventure combines humor with hard science.',
+          reason: `This recommendation matches your interest in "${query}" with engaging storytelling.`,
           confidence: 0.88,
         },
       ];

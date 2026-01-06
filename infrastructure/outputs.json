@@ -1,0 +1,19 @@
+{
+  "LibraryAuthStack": {
+    "UserPoolClientId": "58mv0ve875u0bocck1jhl7fk9",
+    "UserPoolId": "us-east-1_PRvnTBqBb",
+    "ExportsOutputFnGetAttLibraryUserPool7FB694BAArn4FB90C11": "arn:aws:cognito-idp:us-east-1:954164444948:userpool/us-east-1_PRvnTBqBb"
+  },
+  "LibraryDatabaseStack": {
+    "ExportsOutputRefReadingListsTable55CEBF74BB24F674": "ReadingLists",
+    "ExportsOutputFnGetAttBooksTable9DF4AE31Arn35C1AC8F": "arn:aws:dynamodb:us-east-1:954164444948:table/Books",
+    "ExportsOutputFnGetAttReadingListsTable55CEBF74Arn226E6899": "arn:aws:dynamodb:us-east-1:954164444948:table/ReadingLists",
+    "ExportsOutputRefBooksTable9DF4AE3118421EBA": "Books",
+    "BooksTableName": "Books",
+    "ReadingListsTableName": "ReadingLists"
+  },
+  "LibraryApiStack": {
+    "LibraryAPIEndpoint52B629E5": "https://ufp1qmi9va.execute-api.us-east-1.amazonaws.com/prod/",
+    "ApiUrl": "https://ufp1qmi9va.execute-api.us-east-1.amazonaws.com/prod/"
+  }
+}

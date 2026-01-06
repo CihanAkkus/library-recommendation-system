@@ -43,7 +43,6 @@ export function Admin() {
 
   const handleCreateBook = async () => {
     if (!newBook.title || !newBook.author) {
-      alert('Please fill in required fields');
       return;
     }
 

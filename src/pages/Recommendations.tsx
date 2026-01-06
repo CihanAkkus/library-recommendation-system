@@ -24,16 +24,13 @@ export function Recommendations() {
 
   const handleGetRecommendations = async () => {
     if (!query.trim()) {
-      alert('Please enter a query');
       return;
     }
 
     setIsLoading(true);
     try {
-      // TODO: Replace with actual Bedrock API call
-      // This will call Lambda function that uses Amazon Bedrock
-      // to generate personalized recommendations based on the query
-      const recs = await getRecommendations();
+      // Call AI recommendations with user query
+      const recs = await getRecommendations(query);
       setRecommendations(recs);
 
       // Fetch full book details for each recommendation

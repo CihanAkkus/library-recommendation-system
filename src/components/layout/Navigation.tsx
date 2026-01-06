@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 
 /**
  * Navigation component props
@@ -14,13 +15,30 @@ interface NavigationProps {
  * Responsive: horizontal on desktop, vertical on mobile
  */
 export function Navigation({ mobile = false }: NavigationProps) {
-  const links = [
+  const { isAuthenticated, user } = useAuth();
+  
+  const publicLinks = [
     { to: '/', label: 'Home' },
     { to: '/books', label: 'Books' },
     { to: '/recommendations', label: 'Recommendations' },
+  ];
+
+  const authLinks = [
     { to: '/reading-lists', label: 'Reading Lists' },
+  ];
+
+  const adminLinks = [
     { to: '/admin', label: 'Admin' },
   ];
+
+  // Build links array based on auth status
+  let links = [...publicLinks];
+  if (isAuthenticated) {
+    links = [...links, ...authLinks];
+    if (user?.role === 'admin') {
+      links = [...links, ...adminLinks];
+    }
+  }
 
   const baseClasses = 'transition-all duration-300 font-semibold';
   const activeClasses = mobile
